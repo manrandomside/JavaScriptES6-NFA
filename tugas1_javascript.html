@@ -1,0 +1,99 @@
+<!-- 
+  Tugas 1 - JavaScript: Menghitung Luas Bangun Datar
+  Nama        : Firman Fadilah
+  Universitas : Universitas Udayana
+  Divisi      : Fullstack Web Developer - FWD 1
+  No. HP      : 082144715831
+  Email       : firmanfdlh1@gmail.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tugas 1 - JavaScript: Menghitung Luas Bangun Datar</title>
+  </head>
+  <body>
+    <script>
+      // Menampilkan judul halaman
+      document.write("<h1 align='center'>TUGAS 1 - JAVASCRIPT</h1>");
+      document.write(
+        "<h2 align='center'>Menghitung Luas Bangun Datar</h2><hr/>"
+      );
+
+      // ========== MENGHITUNG LUAS PERSEGI PANJANG ==========
+      // Deklarasi dan inisialisasi variabel untuk persegi panjang
+      var panjang = 15;
+      var lebar = 10;
+
+      // Menghitung luas persegi panjang menggunakan operator aritmatika
+      var luasPersegiPanjang = panjang * lebar;
+
+      // Menampilkan hasil perhitungan luas persegi panjang
+      document.write("<h3>1. LUAS PERSEGI PANJANG</h3>");
+      document.write("Panjang: " + panjang + " cm<br/>");
+      document.write("Lebar: " + lebar + " cm<br/>");
+      document.write("Luas = Panjang × Lebar<br/>");
+      document.write("Luas = " + panjang + " × " + lebar + "<br/>");
+      document.write(
+        "<strong>Luas Persegi Panjang = " +
+          luasPersegiPanjang +
+          " cm²</strong><br/><br/>"
+      );
+
+      // ========== MENGHITUNG LUAS BUJUR SANGKAR ==========
+      // Deklarasi dan inisialisasi variabel untuk bujur sangkar
+      let sisi = 12;
+
+      // Menghitung luas bujur sangkar menggunakan operator aritmatika
+      let luasBujurSangkar = sisi * sisi;
+
+      // Menampilkan hasil perhitungan luas bujur sangkar
+      document.write("<h3>2. LUAS BUJUR SANGKAR</h3>");
+      document.write("Sisi: " + sisi + " cm<br/>");
+      document.write("Luas = Sisi × Sisi<br/>");
+      document.write("Luas = " + sisi + " × " + sisi + "<br/>");
+      document.write(
+        "<strong>Luas Bujur Sangkar = " +
+          luasBujurSangkar +
+          " cm²</strong><br/><br/>"
+      );
+
+      // ========== MENGHITUNG LUAS SEGITIGA ==========
+      // Deklarasi dan inisialisasi variabel untuk segitiga
+      let alas = 20;
+      let tinggi = 15;
+
+      // Menghitung luas segitiga menggunakan operator aritmatika
+      let luasSegitiga = (alas * tinggi) / 2;
+
+      // Menampilkan hasil perhitungan luas segitiga
+      document.write("<h3>3. LUAS SEGITIGA</h3>");
+      document.write("Alas: " + alas + " cm<br/>");
+      document.write("Tinggi: " + tinggi + " cm<br/>");
+      document.write("Luas = (Alas × Tinggi) ÷ 2<br/>");
+      document.write("Luas = (" + alas + " × " + tinggi + ") ÷ 2<br/>");
+      document.write("Luas = " + alas * tinggi + " ÷ 2<br/>");
+      document.write(
+        "<strong>Luas Segitiga = " + luasSegitiga + " cm²</strong><br/><br/>"
+      );
+
+      // ========== RINGKASAN HASIL ==========
+      document.write("<hr/>");
+      document.write("<h3>RINGKASAN HASIL PERHITUNGAN:</h3>");
+      document.write(
+        "• Luas Persegi Panjang: " + luasPersegiPanjang + " cm²<br/>"
+      );
+      document.write("• Luas Bujur Sangkar: " + luasBujurSangkar + " cm²<br/>");
+      document.write("• Luas Segitiga: " + luasSegitiga + " cm²<br/>");
+
+      // Menghitung total luas semua bangun datar
+      var totalLuas = luasPersegiPanjang + luasBujurSangkar + luasSegitiga;
+      document.write(
+        "<br/><strong>Total Luas Semua Bangun Datar: " +
+          totalLuas +
+          " cm²</strong>"
+      );
+    </script>
+  </body>
+</html>
