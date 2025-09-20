@@ -1,0 +1,220 @@
+<!-- 
+  Tugas 2 - JavaScript: Data Pegawai dengan Tabel
+  Nama        : Firman Fadilah
+  Universitas : Universitas Udayana
+  Divisi      : Fullstack Web Developer - FWD 1
+  No. HP      : 082144715831
+  Email       : firmanfdlh1@gmail.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tugas 2 - JavaScript: Data Pegawai dengan Tabel</title>
+    <style type="text/css">
+      /* CSS 100% berdasarkan materi Pengantar CSS */
+
+      /* Box Model sesuai materi halaman 11 */
+      * {
+        box-sizing: border-box;
+      }
+
+      /* Background Color dan Color sesuai materi halaman 16-17 */
+      body {
+        background-color: #f9f9f9;
+        color: #335c67;
+        font-family: Arial;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Text align dan Font sesuai materi halaman 23, 26, 28 */
+      h1 {
+        text-align: center;
+        color: #335c67;
+        font-size: 24px;
+      }
+
+      h2 {
+        text-align: center;
+        color: #335c67;
+        font-size: 18px;
+      }
+
+      h3 {
+        color: #335c67;
+        font-size: 16px;
+      }
+
+      /* Border sesuai materi halaman 30-31 */
+      table {
+        border: 2px solid #335c67;
+        border-style: solid;
+        margin: 0 auto;
+        background-color: white;
+      }
+
+      /* Background Color untuk thead */
+      thead {
+        background-color: #335c67;
+        color: white;
+      }
+
+      /* Border dan Padding sesuai materi halaman 30, 33 */
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+      }
+
+      /* Background Color untuk tfoot */
+      tfoot {
+        background-color: #e0e0e0;
+        color: #335c67;
+      }
+
+      /* Margin dan Padding sesuai materi halaman 32-33 */
+      p {
+        margin: 10px;
+        padding: 5px;
+        text-align: left;
+      }
+
+      /* Text decoration sesuai materi halaman 24 */
+      strong {
+        color: #335c67;
+        text-decoration: underline;
+      }
+
+      /* Border untuk HR */
+      hr {
+        border-style: solid;
+        color: #335c67;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // Menampilkan judul halaman
+      document.write("<h1 align='center'>TUGAS 2 - JAVASCRIPT</h1>");
+      document.write("<h2 align='center'>Data Pegawai dengan Tabel</h2><hr/>");
+
+      // ========== DEKLARASI DAN INISIALISASI DATA PEGAWAI ==========
+      var namaPegawai = "Dodi Prayodi";
+      var umur = 25;
+      var jabatan = "manajer";
+      var status = "menikah";
+
+      // ========== MENENTUKAN GAJI POKOK BERDASARKAN JABATAN (IF STATEMENT) ==========
+      var gajiPokok = 0;
+      if (jabatan == "manajer") gajiPokok = 15000000;
+      else if (jabatan == "asisten manajer") gajiPokok = 10000000;
+      else if (jabatan == "staff") gajiPokok = 5000000;
+      else gajiPokok = 0;
+
+      // ========== MENGHITUNG TUNJANGAN DAN POTONGAN ==========
+      // Tunjangan Jabatan: 15% dari gaji pokok
+      var tunjanganJabatan = (gajiPokok * 15) / 100;
+
+      // BPJS: 10% dari gaji pokok
+      var bpjs = (gajiPokok * 10) / 100;
+
+      // Tunjangan Keluarga menggunakan TERNARY OPERATOR
+      var tunjanganKeluarga = status == "menikah" ? (gajiPokok * 20) / 100 : 0;
+
+      // ========== MENGHITUNG TOTAL GAJI ==========
+      var totalGaji = gajiPokok + tunjanganJabatan + tunjanganKeluarga - bpjs;
+
+      // ========== MEMBUAT TABEL DATA PEGAWAI ==========
+      document.write("<table border='1'>");
+
+      // THEAD - Header Tabel
+      document.write("<thead>");
+      document.write("<tr>");
+      document.write("<th>Nama Pegawai</th>");
+      document.write("<th>Umur</th>");
+      document.write("<th>Jabatan</th>");
+      document.write("<th>Status</th>");
+      document.write("<th>Gaji Pokok</th>");
+      document.write("<th>Tunjangan Jabatan</th>");
+      document.write("<th>BPJS</th>");
+      document.write("<th>Tunjangan Keluarga</th>");
+      document.write("</tr>");
+      document.write("</thead>");
+
+      // TBODY - Isi Data Tabel
+      document.write("<tbody>");
+      document.write("<tr>");
+      document.write("<td>" + namaPegawai + "</td>");
+      document.write("<td>" + umur + " tahun</td>");
+      document.write("<td>" + jabatan + "</td>");
+      document.write("<td>" + status + "</td>");
+      document.write("<td>Rp " + gajiPokok + "</td>");
+      document.write("<td>Rp " + tunjanganJabatan + "</td>");
+      document.write("<td>Rp " + bpjs + "</td>");
+      document.write("<td>Rp " + tunjanganKeluarga + "</td>");
+      document.write("</tr>");
+      document.write("</tbody>");
+
+      // TFOOT - Total Gaji
+      document.write("<tfoot>");
+      document.write("<tr>");
+      document.write("<td colspan='7'>Total Gaji</td>");
+      document.write("<td>Rp " + totalGaji + "</td>");
+      document.write("</tr>");
+      document.write("</tfoot>");
+
+      document.write("</table>");
+
+      // ========== PENJELASAN PERHITUNGAN ==========
+      document.write("<hr/>");
+      document.write("<h3>PENJELASAN PERHITUNGAN:</h3>");
+      document.write("<p><strong>Data Pegawai:</strong></p>");
+      document.write("• Nama: " + namaPegawai + "<br/>");
+      document.write("• Umur: " + umur + " tahun<br/>");
+      document.write("• Jabatan: " + jabatan + "<br/>");
+      document.write("• Status: " + status + "<br/><br/>");
+
+      document.write("<p><strong>Perhitungan Gaji:</strong></p>");
+      document.write(
+        "• Gaji Pokok (" + jabatan + "): Rp " + gajiPokok + "<br/>"
+      );
+      document.write(
+        "• Tunjangan Jabatan (15%): Rp " +
+          gajiPokok +
+          " × 15% = Rp " +
+          tunjanganJabatan +
+          "<br/>"
+      );
+      document.write(
+        "• BPJS (10%): Rp " + gajiPokok + " × 10% = Rp " + bpjs + "<br/>"
+      );
+      document.write(
+        "• Tunjangan Keluarga (ternary): " +
+          status +
+          " = " +
+          (status == "menikah" ? "20%" : "0%") +
+          " dari gaji pokok = Rp " +
+          tunjanganKeluarga +
+          "<br/><br/>"
+      );
+
+      document.write("<p><strong>Total Gaji:</strong></p>");
+      document.write(
+        "Rp " +
+          gajiPokok +
+          " + Rp " +
+          tunjanganJabatan +
+          " + Rp " +
+          tunjanganKeluarga +
+          " - Rp " +
+          bpjs +
+          " = <strong>Rp " +
+          totalGaji +
+          "</strong>"
+      );
+    </script>
+  </body>
+</html>
