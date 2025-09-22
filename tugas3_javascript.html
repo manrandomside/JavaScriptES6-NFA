@@ -1,0 +1,369 @@
+<!--
+  Tugas 3 - JavaScript: Sistem Manajemen Pesanan Toko Online
+  Nama        : Firman Fadilah
+  Universitas : Universitas Udayana
+  Divisi      : Fullstack Web Developer - FWD 1
+  No. HP      : 082144715831
+  Email       : firmanfdlh1@gmail.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tugas 3 - Sistem Manajemen Pesanan Toko Online</title>
+    <style type="text/css">
+      /* Reset box model */
+      * {
+        box-sizing: border-box;
+      }
+
+      /* Styling untuk body */
+      body {
+        background-color: #f9f9f9;
+        color: #335c67;
+        font-family: Arial;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Styling untuk heading */
+      h1 {
+        text-align: center;
+        color: #335c67;
+        font-size: 24px;
+      }
+
+      h2 {
+        text-align: center;
+        color: #335c67;
+        font-size: 18px;
+      }
+
+      h3 {
+        color: #335c67;
+        font-size: 16px;
+      }
+
+      /* Styling untuk tabel */
+      table {
+        border: 2px solid #335c67;
+        border-style: solid;
+        margin: 0 auto;
+        background-color: white;
+        margin-bottom: 20px;
+      }
+
+      thead {
+        background-color: #335c67;
+        color: white;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+      }
+
+      tfoot {
+        background-color: #e0e0e0;
+        color: #335c67;
+      }
+
+      /* Styling untuk paragraf */
+      p {
+        margin: 10px;
+        padding: 5px;
+        text-align: left;
+      }
+
+      strong {
+        color: #335c67;
+        text-decoration: underline;
+      }
+
+      hr {
+        border-style: solid;
+        color: #335c67;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // Menampilkan judul halaman
+      document.write("<h1 align='center'>TUGAS 3 - JAVASCRIPT</h1>");
+      document.write(
+        "<h2 align='center'>Sistem Manajemen Pesanan Toko Online</h2><hr/>"
+      );
+
+      // Array untuk menyimpan daftar produk toko
+      var produkToko = [
+        { id: 1, nama: "Laptop", harga: 7000000, stok: 5 },
+        { id: 2, nama: "Mouse", harga: 200000, stok: 10 },
+        { id: 3, nama: "Keyboard", harga: 350000, stok: 7 },
+      ];
+
+      // Array untuk menyimpan data pelanggan
+      var pelangganToko = [
+        { id: 1, nama: "Firman", email: "firmanfdlh1@gmail.com" },
+        { id: 2, nama: "Fadilah", email: "cussrombymangans1@gmail.com" },
+        {
+          id: 3,
+          nama: "Firman Fadilah",
+          email: "fadilah.2308561037@student.unud.ac.id",
+        },
+      ];
+
+      // Array untuk menyimpan data pesanan
+      var pesananToko = [];
+
+      // Function Declaration: Menambah produk baru ke dalam array
+      function tambahProduk(nama, harga, stok) {
+        var idBaru = produkToko.length + 1;
+        var produkBaru = { id: idBaru, nama: nama, harga: harga, stok: stok };
+        produkToko.push(produkBaru);
+        return "Produk " + nama + " berhasil ditambahkan!";
+      }
+
+      // Function Declaration: Menampilkan semua produk dalam bentuk tabel
+      function tampilkanProduk() {
+        if (produkToko.length == 0) {
+          return "Tidak ada produk dalam toko.";
+        }
+
+        var tabelHTML = "<table border='1'>";
+
+        tabelHTML += "<thead>";
+        tabelHTML += "<tr>";
+        tabelHTML += "<th>ID</th>";
+        tabelHTML += "<th>Nama Produk</th>";
+        tabelHTML += "<th>Harga</th>";
+        tabelHTML += "<th>Stok</th>";
+        tabelHTML += "</tr>";
+        tabelHTML += "</thead>";
+
+        tabelHTML += "<tbody>";
+        for (var i = 0; i < produkToko.length; i++) {
+          tabelHTML += "<tr>";
+          tabelHTML += "<td>" + produkToko[i].id + "</td>";
+          tabelHTML += "<td>" + produkToko[i].nama + "</td>";
+          tabelHTML += "<td>Rp " + produkToko[i].harga + "</td>";
+          tabelHTML += "<td>" + produkToko[i].stok + " unit</td>";
+          tabelHTML += "</tr>";
+        }
+        tabelHTML += "</tbody>";
+
+        tabelHTML += "</table>";
+        return tabelHTML;
+      }
+
+      // Function Expression: Menghapus produk berdasarkan ID
+      var hapusProduk = function (id) {
+        for (var i = 0; i < produkToko.length; i++) {
+          if (produkToko[i].id == id) {
+            var namaProduk = produkToko[i].nama;
+            produkToko.splice(i, 1);
+            return "Produk " + namaProduk + " berhasil dihapus!";
+          }
+        }
+        return "Produk dengan ID " + id + " tidak ditemukan!";
+      };
+
+      // Function Declaration: Menambah pelanggan baru
+      function tambahPelanggan(nama, email) {
+        var idBaru = pelangganToko.length + 1;
+        var pelangganBaru = { id: idBaru, nama: nama, email: email };
+        pelangganToko.push(pelangganBaru);
+        return "Pelanggan " + nama + " berhasil ditambahkan!";
+      }
+
+      // Function Declaration: Menampilkan semua pelanggan dalam bentuk tabel
+      function tampilkanPelanggan() {
+        var tabelHTML = "<table border='1'>";
+        tabelHTML += "<thead>";
+        tabelHTML += "<tr>";
+        tabelHTML += "<th>ID</th>";
+        tabelHTML += "<th>Nama Pelanggan</th>";
+        tabelHTML += "<th>Email</th>";
+        tabelHTML += "</tr>";
+        tabelHTML += "</thead>";
+        tabelHTML += "<tbody>";
+
+        for (var i = 0; i < pelangganToko.length; i++) {
+          tabelHTML += "<tr>";
+          tabelHTML += "<td>" + pelangganToko[i].id + "</td>";
+          tabelHTML += "<td>" + pelangganToko[i].nama + "</td>";
+          tabelHTML += "<td>" + pelangganToko[i].email + "</td>";
+          tabelHTML += "</tr>";
+        }
+
+        tabelHTML += "</tbody>";
+        tabelHTML += "</table>";
+        return tabelHTML;
+      }
+
+      // Function Expression: Membuat pesanan baru dengan validasi
+      var buatPesanan = function (idPelanggan, idProduk, jumlah) {
+        // Cari pelanggan berdasarkan ID
+        var pelanggan = null;
+        for (var i = 0; i < pelangganToko.length; i++) {
+          if (pelangganToko[i].id == idPelanggan) {
+            pelanggan = pelangganToko[i];
+            break;
+          }
+        }
+
+        // Cari produk berdasarkan ID
+        var produk = null;
+        for (var i = 0; i < produkToko.length; i++) {
+          if (produkToko[i].id == idProduk) {
+            produk = produkToko[i];
+            break;
+          }
+        }
+
+        // Validasi pelanggan dan produk
+        if (pelanggan == null) {
+          return "Pelanggan dengan ID " + idPelanggan + " tidak ditemukan!";
+        }
+        if (produk == null) {
+          return "Produk dengan ID " + idProduk + " tidak ditemukan!";
+        }
+        if (produk.stok < jumlah) {
+          return "Stok tidak mencukupi! Stok tersedia: " + produk.stok;
+        }
+
+        // Buat pesanan baru
+        var idPesananBaru = pesananToko.length + 1;
+        var totalHarga = produk.harga * jumlah;
+        var pesananBaru = {
+          id: idPesananBaru,
+          pelanggan: pelanggan.nama,
+          produk: produk.nama,
+          jumlah: jumlah,
+          totalHarga: totalHarga,
+        };
+
+        pesananToko.push(pesananBaru);
+        produk.stok -= jumlah; // Update stok
+
+        return "Pesanan berhasil dibuat! Total: Rp " + totalHarga;
+      };
+
+      // Function Declaration: Menampilkan semua pesanan dalam bentuk tabel
+      function tampilkanPesanan() {
+        if (pesananToko.length == 0) {
+          return "Belum ada pesanan.";
+        }
+
+        var tabelHTML = "<table border='1'>";
+        tabelHTML += "<thead>";
+        tabelHTML += "<tr>";
+        tabelHTML += "<th>ID Pesanan</th>";
+        tabelHTML += "<th>Pelanggan</th>";
+        tabelHTML += "<th>Produk</th>";
+        tabelHTML += "<th>Jumlah</th>";
+        tabelHTML += "<th>Total Harga</th>";
+        tabelHTML += "</tr>";
+        tabelHTML += "</thead>";
+        tabelHTML += "<tbody>";
+
+        for (var i = 0; i < pesananToko.length; i++) {
+          tabelHTML += "<tr>";
+          tabelHTML += "<td>" + pesananToko[i].id + "</td>";
+          tabelHTML += "<td>" + pesananToko[i].pelanggan + "</td>";
+          tabelHTML += "<td>" + pesananToko[i].produk + "</td>";
+          tabelHTML += "<td>" + pesananToko[i].jumlah + " unit</td>";
+          tabelHTML += "<td>Rp " + pesananToko[i].totalHarga + "</td>";
+          tabelHTML += "</tr>";
+        }
+
+        tabelHTML += "</tbody>";
+        tabelHTML += "</table>";
+        return tabelHTML;
+      }
+
+      // Function Declaration: Menghitung total pembayaran semua pesanan
+      function hitungTotalPembayaran() {
+        var totalPembayaran = 0;
+        for (var i = 0; i < pesananToko.length; i++) {
+          totalPembayaran += pesananToko[i].totalHarga;
+        }
+        return totalPembayaran;
+      }
+
+      // Menampilkan data awal
+      document.write("<h3>DAFTAR PRODUK AWAL:</h3>");
+      document.write(tampilkanProduk());
+
+      document.write("<h3>DAFTAR PELANGGAN:</h3>");
+      document.write(tampilkanPelanggan());
+
+      // Menggunakan fungsi tambah produk
+      document.write("<h3>MENAMBAH PRODUK BARU:</h3>");
+      var hasilTambahProduk = tambahProduk("Monitor", 1500000, 3);
+      document.write("<p>" + hasilTambahProduk + "</p>");
+
+      // Menggunakan fungsi tambah pelanggan
+      document.write("<h3>MENAMBAH PELANGGAN BARU:</h3>");
+      var hasilTambahPelanggan = tambahPelanggan(
+        "Firman Sarjana Informatika",
+        "firman@gmail.com"
+      );
+      document.write("<p>" + hasilTambahPelanggan + "</p>");
+
+      // Menampilkan daftar setelah penambahan
+      document.write("<h3>DAFTAR PRODUK SETELAH PENAMBAHAN:</h3>");
+      document.write(tampilkanProduk());
+
+      // Membuat pesanan
+      document.write("<h3>MEMBUAT PESANAN:</h3>");
+      var hasilPesanan1 = buatPesanan(1, 1, 2); // Firman memesan 2 Laptop
+      document.write("<p>Pesanan 1: " + hasilPesanan1 + "</p>");
+
+      var hasilPesanan2 = buatPesanan(2, 2, 5); // Fadilah memesan 5 Mouse
+      document.write("<p>Pesanan 2: " + hasilPesanan2 + "</p>");
+
+      var hasilPesanan3 = buatPesanan(3, 4, 1); // Firman Fadilah memesan 1 Monitor
+      document.write("<p>Pesanan 3: " + hasilPesanan3 + "</p>");
+
+      // Menampilkan pesanan
+      document.write("<h3>DAFTAR PESANAN:</h3>");
+      document.write(tampilkanPesanan());
+
+      // Menghapus produk
+      document.write("<h3>MENGHAPUS PRODUK:</h3>");
+      var hasilHapus = hapusProduk(3); // Menghapus Keyboard
+      document.write("<p>" + hasilHapus + "</p>");
+
+      // Menampilkan daftar setelah penghapusan
+      document.write("<h3>DAFTAR PRODUK SETELAH PENGHAPUSAN:</h3>");
+      document.write(tampilkanProduk());
+
+      // Ringkasan toko
+      document.write("<hr/>");
+      document.write("<h3>RINGKASAN SISTEM TOKO ONLINE:</h3>");
+      document.write(
+        "<p><strong>Jumlah Jenis Produk:</strong> " +
+          produkToko.length +
+          " jenis</p>"
+      );
+      document.write(
+        "<p><strong>Jumlah Pelanggan:</strong> " +
+          pelangganToko.length +
+          " orang</p>"
+      );
+      document.write(
+        "<p><strong>Jumlah Pesanan:</strong> " +
+          pesananToko.length +
+          " pesanan</p>"
+      );
+      document.write(
+        "<p><strong>Total Pembayaran Semua Pesanan:</strong> Rp " +
+          hitungTotalPembayaran() +
+          "</p>"
+      );
+    </script>
+  </body>
+</html>
