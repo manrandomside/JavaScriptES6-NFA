@@ -1,0 +1,335 @@
+<!--
+  Tugas 4 - JavaScript: Sistem Manajemen Transportasi OOP
+  Nama        : Firman Fadilah
+  Universitas : Universitas Udayana
+  Divisi      : Fullstack Web Developer - FWD 1
+  No. HP      : 082144715831
+  Email       : firmanfdlh1@gmail.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tugas 4 - Sistem Manajemen Transportasi OOP</title>
+    <style type="text/css">
+      /* Reset box model */
+      * {
+        box-sizing: border-box;
+      }
+
+      /* Styling untuk body */
+      body {
+        background-color: #f9f9f9;
+        color: #335c67;
+        font-family: Arial;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Styling untuk heading */
+      h1 {
+        text-align: center;
+        color: #335c67;
+        font-size: 24px;
+      }
+
+      h2 {
+        text-align: center;
+        color: #335c67;
+        font-size: 18px;
+      }
+
+      h3 {
+        color: #335c67;
+        font-size: 16px;
+      }
+
+      /* Styling untuk tabel */
+      table {
+        border: 2px solid #335c67;
+        border-style: solid;
+        margin: 0 auto;
+        background-color: white;
+        margin-bottom: 20px;
+      }
+
+      thead {
+        background-color: #335c67;
+        color: white;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+      }
+
+      tfoot {
+        background-color: #e0e0e0;
+        color: #335c67;
+      }
+
+      /* Styling untuk paragraf */
+      p {
+        margin: 10px;
+        padding: 5px;
+        text-align: left;
+      }
+
+      strong {
+        color: #335c67;
+        text-decoration: underline;
+      }
+
+      hr {
+        border-style: solid;
+        color: #335c67;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // Menampilkan judul halaman
+      document.write("<h1 align='center'>TUGAS 4 - JAVASCRIPT OOP</h1>");
+      document.write(
+        "<h2 align='center'>Sistem Manajemen Transportasi</h2><hr/>"
+      );
+
+      // Parent Class: Kendaraan - Menggunakan ES6 Class
+      class Kendaraan {
+        constructor(jenis, merk, tahun) {
+          this.jenis = jenis;
+          this.merk = merk;
+          this.tahun = tahun;
+        }
+
+        // Method untuk mendapatkan info kendaraan
+        getInfo() {
+          return this.jenis + " " + this.merk + " (" + this.tahun + ")";
+        }
+      }
+
+      // Child Class: Mobil - Inheritance dengan extends dan super
+      class Mobil extends Kendaraan {
+        constructor(merk, tahun, jumlahPintu) {
+          super("Mobil", merk, tahun); // Memanggil constructor parent class
+          this.jumlahPintu = jumlahPintu; // Properti khusus mobil
+        }
+
+        // Method override untuk polymorphism
+        getInfo() {
+          return (
+            "Mobil " +
+            this.merk +
+            " (" +
+            this.tahun +
+            ") - " +
+            this.jumlahPintu +
+            " pintu"
+          );
+        }
+      }
+
+      // Child Class: Motor - Inheritance dengan extends dan super
+      class Motor extends Kendaraan {
+        constructor(merk, tahun, tipeTransmisi) {
+          super("Motor", merk, tahun); // Memanggil constructor parent class
+          this.tipeTransmisi = tipeTransmisi; // Properti khusus motor
+        }
+
+        // Method override untuk polymorphism
+        getInfo() {
+          return (
+            "Motor " +
+            this.merk +
+            " (" +
+            this.tahun +
+            ") - " +
+            this.tipeTransmisi
+          );
+        }
+      }
+
+      // Child Class: Bus - Inheritance dengan extends dan super
+      class Bus extends Kendaraan {
+        constructor(merk, tahun, kapasitas) {
+          super("Bus", merk, tahun); // Memanggil constructor parent class
+          this.kapasitas = kapasitas; // Properti khusus bus
+        }
+
+        // Method override untuk polymorphism
+        getInfo() {
+          return (
+            "Bus " +
+            this.merk +
+            " (" +
+            this.tahun +
+            ") - " +
+            this.kapasitas +
+            " penumpang"
+          );
+        }
+      }
+
+      // Class Pelanggan sesuai kriteria tugas
+      class Pelanggan {
+        constructor(nama, nomorTelepon) {
+          this.nama = nama;
+          this.nomorTelepon = nomorTelepon;
+          this.kendaraanDisewa = null; // Awalnya belum menyewa kendaraan
+        }
+
+        // Method untuk mencatat transaksi penyewaan kendaraan
+        sewaKendaraan(kendaraan) {
+          this.kendaraanDisewa = kendaraan;
+          return this.nama + " berhasil menyewa " + kendaraan.getInfo();
+        }
+
+        // Method untuk mendapatkan info pelanggan
+        getInfoPelanggan() {
+          if (this.kendaraanDisewa === null) {
+            return (
+              this.nama +
+              " (" +
+              this.nomorTelepon +
+              ") - Belum menyewa kendaraan"
+            );
+          }
+          return (
+            this.nama +
+            " (" +
+            this.nomorTelepon +
+            ") - Sedang menyewa: " +
+            this.kendaraanDisewa.getInfo()
+          );
+        }
+      }
+
+      // Array untuk menyimpan data pelanggan
+      var daftarPelanggan = [];
+
+      // Function untuk menambah pelanggan
+      function tambahPelanggan(pelanggan) {
+        daftarPelanggan.push(pelanggan);
+        return "Pelanggan " + pelanggan.nama + " berhasil ditambahkan";
+      }
+
+      // Function untuk menampilkan daftar pelanggan yang sedang menyewa kendaraan
+      function tampilkanPelangganMenyewa() {
+        // Filter pelanggan yang sedang menyewa
+        var pelangganMenyewa = [];
+        for (var i = 0; i < daftarPelanggan.length; i++) {
+          if (daftarPelanggan[i].kendaraanDisewa !== null) {
+            pelangganMenyewa.push(daftarPelanggan[i]);
+          }
+        }
+
+        if (pelangganMenyewa.length == 0) {
+          return "Belum ada pelanggan yang menyewa kendaraan.";
+        }
+
+        var tabelHTML = "<table border='1'>";
+        tabelHTML += "<thead>";
+        tabelHTML += "<tr>";
+        tabelHTML += "<th>No</th>";
+        tabelHTML += "<th>Nama Pelanggan</th>";
+        tabelHTML += "<th>Nomor Telepon</th>";
+        tabelHTML += "<th>Kendaraan yang Disewa</th>";
+        tabelHTML += "</tr>";
+        tabelHTML += "</thead>";
+        tabelHTML += "<tbody>";
+
+        for (var i = 0; i < pelangganMenyewa.length; i++) {
+          tabelHTML += "<tr>";
+          tabelHTML += "<td>" + (i + 1) + "</td>";
+          tabelHTML += "<td>" + pelangganMenyewa[i].nama + "</td>";
+          tabelHTML += "<td>" + pelangganMenyewa[i].nomorTelepon + "</td>";
+          tabelHTML +=
+            "<td>" + pelangganMenyewa[i].kendaraanDisewa.getInfo() + "</td>";
+          tabelHTML += "</tr>";
+        }
+
+        tabelHTML += "</tbody>";
+        tabelHTML += "</table>";
+        return tabelHTML;
+      }
+
+      // Membuat objek kendaraan menggunakan constructor
+      var mobil1 = new Mobil("Toyota Avanza", 2022, 4);
+      var motor1 = new Motor("Honda Vario", 2021, "Automatic");
+      var bus1 = new Bus("Mercedes Sprinter", 2020, 16);
+
+      // Menampilkan info kendaraan (demonstrasi polymorphism)
+      document.write("<h3>DAFTAR KENDARAAN TERSEDIA:</h3>");
+      document.write("<p>1. " + mobil1.getInfo() + "</p>");
+      document.write("<p>2. " + motor1.getInfo() + "</p>");
+      document.write("<p>3. " + bus1.getInfo() + "</p>");
+
+      // Membuat objek pelanggan sesuai kriteria tugas
+      var pelanggan1 = new Pelanggan("Firman Fadilah", "082144715831");
+      var pelanggan2 = new Pelanggan("Firman", "082144715831");
+      var pelanggan3 = new Pelanggan("Fadilah", "082144715831");
+
+      // Menambahkan pelanggan ke sistem
+      document.write("<h3>MENAMBAHKAN PELANGGAN:</h3>");
+      document.write("<p>" + tambahPelanggan(pelanggan1) + "</p>");
+      document.write("<p>" + tambahPelanggan(pelanggan2) + "</p>");
+      document.write("<p>" + tambahPelanggan(pelanggan3) + "</p>");
+
+      // Mencatat transaksi penyewaan kendaraan
+      document.write("<h3>TRANSAKSI PENYEWAAN KENDARAAN:</h3>");
+      document.write("<p>" + pelanggan1.sewaKendaraan(mobil1) + "</p>");
+      document.write("<p>" + pelanggan2.sewaKendaraan(motor1) + "</p>");
+
+      // Menampilkan daftar pelanggan yang sedang menyewa kendaraan
+      document.write(
+        "<h3>DAFTAR PELANGGAN YANG SEDANG MENYEWA KENDARAAN:</h3>"
+      );
+      document.write(tampilkanPelangganMenyewa());
+
+      // Menambah satu transaksi lagi
+      document.write("<h3>TRANSAKSI PENYEWAAN TAMBAHAN:</h3>");
+      document.write("<p>" + pelanggan3.sewaKendaraan(bus1) + "</p>");
+
+      // Menampilkan daftar update setelah transaksi baru
+      document.write("<h3>DAFTAR UPDATE PELANGGAN YANG SEDANG MENYEWA:</h3>");
+      document.write(tampilkanPelangganMenyewa());
+
+      // Ringkasan sistem
+      document.write("<hr/>");
+      document.write("<h3>RINGKASAN SISTEM:</h3>");
+      document.write(
+        "<p><strong>Total Pelanggan Terdaftar:</strong> " +
+          daftarPelanggan.length +
+          " orang</p>"
+      );
+
+      // Menghitung jumlah pelanggan yang sedang menyewa
+      var jumlahPelangganMenyewa = 0;
+      for (var i = 0; i < daftarPelanggan.length; i++) {
+        if (daftarPelanggan[i].kendaraanDisewa !== null) {
+          jumlahPelangganMenyewa++;
+        }
+      }
+      document.write(
+        "<p><strong>Pelanggan yang Sedang Menyewa:</strong> " +
+          jumlahPelangganMenyewa +
+          " orang</p>"
+      );
+
+      // Menampilkan semua info pelanggan
+      document.write("<h3>INFO SEMUA PELANGGAN:</h3>");
+      for (var i = 0; i < daftarPelanggan.length; i++) {
+        document.write(
+          "<p>" +
+            (i + 1) +
+            ". " +
+            daftarPelanggan[i].getInfoPelanggan() +
+            "</p>"
+        );
+      }
+    </script>
+  </body>
+</html>
