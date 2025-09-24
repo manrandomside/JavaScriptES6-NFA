@@ -1,0 +1,524 @@
+<!--
+  Tugas 5 - JavaScript: Sistem Manajemen Produk Toko Online
+  Nama        : Firman Fadilah
+  Universitas : Universitas Udayana
+  Divisi      : Fullstack Web Developer - FWD 1
+  No. HP      : 082144715831
+  Email       : firmanfdlh1@gmail.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tugas 5 - Sistem Manajemen Produk Toko Online</title>
+    <style type="text/css">
+      /* Reset box model */
+      * {
+        box-sizing: border-box;
+      }
+
+      /* Styling untuk body */
+      body {
+        background-color: #f9f9f9;
+        color: #335c67;
+        font-family: Arial;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Styling untuk heading */
+      h1 {
+        text-align: center;
+        color: #335c67;
+        font-size: 24px;
+      }
+
+      h2 {
+        text-align: center;
+        color: #335c67;
+        font-size: 18px;
+      }
+
+      h3 {
+        color: #335c67;
+        font-size: 16px;
+      }
+
+      /* Styling untuk tabel */
+      table {
+        border: 2px solid #335c67;
+        border-style: solid;
+        margin: 0 auto;
+        background-color: white;
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 800px;
+      }
+
+      thead {
+        background-color: #335c67;
+        color: white;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+      }
+
+      tfoot {
+        background-color: #e0e0e0;
+        color: #335c67;
+      }
+
+      /* Styling untuk paragraf */
+      p {
+        margin: 10px;
+        padding: 5px;
+        text-align: left;
+      }
+
+      strong {
+        color: #335c67;
+        text-decoration: underline;
+      }
+
+      hr {
+        border-style: solid;
+        color: #335c67;
+      }
+
+      /* Styling untuk button */
+      .btn {
+        background-color: #335c67;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      .btn:hover {
+        background-color: #2a4a54;
+      }
+
+      /* Styling untuk form container */
+      .form-container {
+        background-color: white;
+        padding: 20px;
+        margin: 20px 0;
+        border: 1px solid #335c67;
+        border-radius: 5px;
+        max-width: 400px;
+        margin: 20px auto;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+      }
+
+      /* Styling untuk hasil output */
+      .output {
+        background-color: white;
+        padding: 15px;
+        margin: 10px 0;
+        border-left: 4px solid #335c67;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>TUGAS 5 - JAVASCRIPT ES6</h1>
+    <h2>Sistem Manajemen Produk Toko Online</h2>
+    <hr />
+
+    <!-- 1. List data produk awal minimal 5 -->
+    <h3>LIST DATA PRODUK AWAL MINIMAL 5:</h3>
+    <div id="produkAwal"></div>
+
+    <!-- 2. Form untuk menambah produk -->
+    <div class="form-container">
+      <h3>Menambahkan Produk</h3>
+      <div class="form-group">
+        <label for="namaProduk">Nama Produk:</label>
+        <input type="text" id="namaProduk" placeholder="Masukkan nama produk" />
+      </div>
+      <div class="form-group">
+        <label for="hargaProduk">Harga:</label>
+        <input
+          type="number"
+          id="hargaProduk"
+          placeholder="Masukkan harga produk"
+        />
+      </div>
+      <button class="btn" id="btnTambah">Tambah Produk</button>
+    </div>
+
+    <!-- 3. Form untuk menghapus produk -->
+    <div class="form-container">
+      <h3>Menghapus Produk</h3>
+      <div class="form-group">
+        <label for="idHapus">ID Produk yang akan dihapus:</label>
+        <input type="number" id="idHapus" placeholder="Masukkan ID produk" />
+      </div>
+      <button class="btn" id="btnHapus">Hapus Produk</button>
+    </div>
+
+    <!-- 4. Tombol untuk menampilkan semua produk -->
+    <div style="text-align: center; margin: 20px 0">
+      <h3>Menampilkan Semua Produk</h3>
+      <button class="btn" id="btnTampilkan">Tampilkan Semua Produk</button>
+    </div>
+
+    <!-- Area untuk menampilkan output -->
+    <div id="output"></div>
+
+    <script>
+      // Data produk awal minimal 5 (menggunakan object sesuai materi)
+      let produkList = [
+        { id: 1, nama: "Laptop", harga: 12000000 },
+        { id: 2, nama: "Smartphone", harga: 5000000 },
+        { id: 3, nama: "Tablet", harga: 3000000 },
+        { id: 4, nama: "Headphone", harga: 500000 },
+        { id: 5, nama: "Mouse", harga: 150000 },
+      ];
+
+      // Variable untuk ID produk selanjutnya
+      let nextId = 6;
+
+      // Fungsi untuk menambah produk menggunakan Rest Parameter
+      function tambahProduk(...produkBaru) {
+        // Menggunakan Spread Operator untuk menggabungkan array
+        produkList = [...produkList, ...produkBaru];
+        console.log("Produk berhasil ditambahkan:", produkBaru);
+      }
+
+      // Fungsi untuk menampilkan daftar produk
+      function tampilkanProduk() {
+        console.log("Daftar Produk Saat Ini:", produkList);
+      }
+
+      // Fungsi untuk menyalin daftar produk menggunakan Spread Operator
+      function salinProduk() {
+        return [...produkList]; // Menggunakan spread operator untuk duplikasi array
+      }
+
+      // Fungsi untuk menghapus produk berdasarkan ID menggunakan Rest Parameter
+      function hapusProduk(idProduk, ...keterangan) {
+        const indexProduk = produkList.findIndex(
+          (produk) => produk.id === idProduk
+        );
+
+        if (indexProduk !== -1) {
+          const produkDihapus = produkList[indexProduk];
+          produkList.splice(indexProduk, 1);
+          console.log("Produk berhasil dihapus:", produkDihapus);
+          console.log("Keterangan tambahan:", ...keterangan);
+          return true;
+        } else {
+          console.log("Produk dengan ID", idProduk, "tidak ditemukan");
+          return false;
+        }
+      }
+
+      // Fungsi untuk menampilkan detail produk menggunakan Destructuring Object
+      function tampilkanDetailProduk(produk) {
+        // Menggunakan destructuring object
+        const { id, nama, harga } = produk;
+        return `ID: ${id}, Nama: ${nama}, Harga: Rp ${harga.toLocaleString(
+          "id-ID"
+        )}`;
+      }
+
+      // Fungsi untuk membuat tabel HTML dari daftar produk
+      function buatTabelProduk() {
+        if (produkList.length === 0) {
+          return "<p>Belum ada produk dalam daftar.</p>";
+        }
+
+        let tabelHTML = "<table>";
+        tabelHTML += "<thead>";
+        tabelHTML += "<tr>";
+        tabelHTML += "<th>ID</th>";
+        tabelHTML += "<th>Nama Produk</th>";
+        tabelHTML += "<th>Harga</th>";
+        tabelHTML += "</tr>";
+        tabelHTML += "</thead>";
+        tabelHTML += "<tbody>";
+
+        // Menggunakan destructuring dalam loop
+        for (let i = 0; i < produkList.length; i++) {
+          const { id, nama, harga } = produkList[i];
+          tabelHTML += "<tr>";
+          tabelHTML += `<td>${id}</td>`;
+          tabelHTML += `<td>${nama}</td>`;
+          tabelHTML += `<td>Rp ${harga.toLocaleString("id-ID")}</td>`;
+          tabelHTML += "</tr>";
+        }
+
+        tabelHTML += "</tbody>";
+        tabelHTML += "</table>";
+        return tabelHTML;
+      }
+
+      // Fungsi untuk menampilkan output ke halaman
+      function tampilkanOutput(pesan) {
+        const outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = '<div class="output">' + pesan + "</div>";
+      }
+
+      // Fungsi untuk menampilkan produk awal di atas
+      function tampilkanProdukAwal() {
+        const produkAwalDiv = document.getElementById("produkAwal");
+
+        // Menggunakan destructuring array untuk contoh penggunaan
+        const [pertama, kedua, ...sisanya] = produkList;
+
+        let konten = buatTabelProduk();
+        konten += '<div class="output">';
+        konten +=
+          "<p><strong>Contoh Penggunaan Destructuring Array:</strong></p>";
+        konten += `<p>Produk Pertama: ${tampilkanDetailProduk(pertama)}</p>`;
+        konten += `<p>Produk Kedua: ${tampilkanDetailProduk(kedua)}</p>`;
+        konten += `<p>Sisa Produk: ${sisanya.length} item lainnya</p>`;
+        konten += "</div>";
+
+        produkAwalDiv.innerHTML = konten;
+      }
+
+      // Event Listener untuk tombol Tambah Produk (menggunakan addEventListener)
+      document
+        .getElementById("btnTambah")
+        .addEventListener("click", function () {
+          const nama = document.getElementById("namaProduk").value;
+          const harga = parseInt(document.getElementById("hargaProduk").value);
+
+          if (nama && harga && harga > 0) {
+            const produkBaru = { id: nextId, nama: nama, harga: harga };
+
+            // Memanggil fungsi tambahProduk dengan Rest Parameter
+            tambahProduk(produkBaru);
+            nextId++;
+
+            // Clear input fields
+            document.getElementById("namaProduk").value = "";
+            document.getElementById("hargaProduk").value = "";
+
+            // Tampilkan pesan sukses menggunakan destructuring
+            const { id, nama: namaProduk, harga: hargaProduk } = produkBaru;
+            const pesan = `<h3>PRODUK BERHASIL DITAMBAHKAN!</h3>
+                              <p><strong>Detail produk baru:</strong></p>
+                              <p>ID: ${id} | Nama: ${namaProduk} | Harga: Rp ${hargaProduk.toLocaleString(
+              "id-ID"
+            )}</p>
+                              <p><strong>Total produk sekarang:</strong> ${
+                                produkList.length
+                              } item</p>`;
+            tampilkanOutput(pesan);
+
+            console.log("Event tambah produk dijalankan!");
+          } else {
+            alert("Mohon lengkapi semua field dengan benar!");
+          }
+        });
+
+      // Event Listener untuk tombol Hapus Produk
+      document
+        .getElementById("btnHapus")
+        .addEventListener("click", function () {
+          const id = parseInt(document.getElementById("idHapus").value);
+
+          if (id && id > 0) {
+            // Simpan data sebelum dihapus untuk ditampilkan
+            const produkDihapus = produkList.find((produk) => produk.id === id);
+
+            // Memanggil fungsi hapusProduk dengan Rest Parameter untuk keterangan
+            const berhasil = hapusProduk(
+              id,
+              "Dihapus melalui form",
+              "Waktu:",
+              new Date().toLocaleString()
+            );
+
+            if (berhasil && produkDihapus) {
+              // Clear input field
+              document.getElementById("idHapus").value = "";
+
+              // Menggunakan destructuring untuk menampilkan info produk yang dihapus
+              const { nama, harga } = produkDihapus;
+              const pesan = `<h3>PRODUK BERHASIL DIHAPUS!</h3>
+                                  <p><strong>Produk yang dihapus:</strong></p>
+                                  <p>ID: ${id} | Nama: ${nama} | Harga: Rp ${harga.toLocaleString(
+                "id-ID"
+              )}</p>
+                                  <p><strong>Total produk sekarang:</strong> ${
+                                    produkList.length
+                                  } item</p>`;
+              tampilkanOutput(pesan);
+            } else {
+              tampilkanOutput(
+                `<h3>GAGAL MENGHAPUS!</h3><p>Produk dengan ID ${id} tidak ditemukan.</p>`
+              );
+            }
+
+            console.log("Event hapus produk dijalankan!");
+          } else {
+            alert("Mohon masukkan ID produk yang valid!");
+          }
+        });
+
+      // Event Listener untuk tombol Tampilkan Semua Produk
+      document
+        .getElementById("btnTampilkan")
+        .addEventListener("click", function () {
+          // Menggunakan destructuring array untuk mengambil produk pertama dan kedua
+          const [produk1, produk2, ...produkLainnya] = produkList;
+
+          let pesan = "<h3>MENAMPILKAN SEMUA PRODUK:</h3>";
+          pesan += buatTabelProduk();
+
+          // Contoh penggunaan destructuring array
+          if (produk1) {
+            pesan +=
+              '<div style="background-color: #f0f8ff; padding: 15px; margin: 10px 0; border-radius: 5px;">';
+            pesan += "<h4>Contoh Penggunaan Destructuring Array:</h4>";
+            pesan += `<p><strong>Produk Pertama:</strong> ${tampilkanDetailProduk(
+              produk1
+            )}</p>`;
+
+            if (produk2) {
+              pesan += `<p><strong>Produk Kedua:</strong> ${tampilkanDetailProduk(
+                produk2
+              )}</p>`;
+            }
+
+            pesan += `<p><strong>Produk Lainnya:</strong> ${produkLainnya.length} item</p>`;
+            pesan += "</div>";
+          }
+
+          // Menampilkan statistik menggunakan spread operator untuk menyalin array
+          const produkCadangan = salinProduk();
+          pesan +=
+            '<div style="background-color: #f0fff0; padding: 15px; margin: 10px 0; border-radius: 5px;">';
+          pesan += "<h4>Statistik Toko Online:</h4>";
+          pesan += `<p><strong>Total Produk Aktif:</strong> ${produkList.length} item</p>`;
+          pesan += `<p><strong>Backup Data Tersimpan:</strong> ${produkCadangan.length} item</p>`;
+
+          // Menghitung total harga semua produk dengan destructuring
+          let totalHarga = 0;
+          for (const produk of produkList) {
+            const { harga } = produk; // Destructuring untuk mengambil harga
+            totalHarga += harga;
+          }
+          pesan += `<p><strong>Total Nilai Inventori:</strong> Rp ${totalHarga.toLocaleString(
+            "id-ID"
+          )}</p>`;
+          pesan += "</div>";
+
+          tampilkanOutput(pesan);
+
+          // Memanggil fungsi untuk menampilkan di console dengan destructuring
+          tampilkanProduk();
+
+          // Contoh penggunaan console.log dengan destructuring
+          console.log("=== CONTOH DESTRUCTURING DALAM CONSOLE ===");
+          produkList.forEach((produk, index) => {
+            const { id, nama, harga } = produk;
+            console.log(
+              `${index + 1}. ID: ${id}, Nama: ${nama}, Harga: ${harga}`
+            );
+          });
+
+          console.log("Event tampilkan semua produk dijalankan!");
+        });
+
+      // Event listener untuk load halaman (menampilkan data awal)
+      window.addEventListener("load", function () {
+        console.log("=== SISTEM TOKO ONLINE DIMUAT ===");
+        console.log("Menampilkan list data produk awal minimal 5");
+
+        // Menampilkan produk awal di bagian atas
+        tampilkanProdukAwal();
+        tampilkanProduk();
+
+        // Contoh penggunaan ES6 features di console
+        console.log("=== CONTOH PENGGUNAAN ES6 FEATURES ===");
+
+        // Contoh destructuring array
+        const [pertama, kedua, ...sisanya] = produkList;
+        console.log("Destructuring Array - Produk pertama:", pertama);
+        console.log("Destructuring Array - Produk kedua:", kedua);
+        console.log("Destructuring Array - Sisa produk:", sisanya);
+
+        // Contoh spread operator
+        const produkBaru1 = { id: 99, nama: "Contoh Produk 1", harga: 1000000 };
+        const produkBaru2 = {
+          id: 100,
+          nama: "Contoh Produk 2",
+          harga: 2000000,
+        };
+        console.log("Spread Operator - Menggabungkan produk:", [
+          ...produkList,
+          produkBaru1,
+          produkBaru2,
+        ]);
+
+        // Contoh destructuring object
+        const { id, nama, harga } = produkList[0];
+        console.log(
+          "Destructuring Object - ID:",
+          id,
+          "Nama:",
+          nama,
+          "Harga:",
+          harga
+        );
+
+        console.log("Event load halaman dijalankan!");
+      });
+
+      // Contoh penggunaan nama fungsi bebas untuk event handler
+      const eventHandler = {
+        // Method untuk handling event dengan destructuring
+        handleProductEvent: function (eventType, productData) {
+          const { type, data } = { type: eventType, data: productData };
+          console.log(`Event ${type} diproses dengan data:`, data);
+        },
+
+        // Method untuk menampilkan informasi produk menggunakan rest parameter
+        displayMultipleProducts: function (...products) {
+          console.log("Menampilkan multiple produk:", products);
+          products.forEach((product) => {
+            const { nama, harga } = product;
+            console.log(`- ${nama}: Rp ${harga.toLocaleString("id-ID")}`);
+          });
+        },
+      };
+
+      // Menampilkan ringkasan fitur ES6 yang digunakan
+      console.log("=== FITUR ES6 YANG DIGUNAKAN ===");
+      console.log("Event Listener dengan addEventListener");
+      console.log("Destructuring Array: const [a, b, ...rest] = array");
+      console.log("Destructuring Object: const { nama, harga } = produk");
+      console.log("Spread Operator: [...array1, ...array2]");
+      console.log("Rest Parameter: function(...params)");
+      console.log("Nama fungsi bebas untuk event handler");
+    </script>
+  </body>
+</html>
