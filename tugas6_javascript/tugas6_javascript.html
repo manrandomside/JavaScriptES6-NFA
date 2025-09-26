@@ -1,0 +1,447 @@
+<!--
+  Tugas 6 - JavaScript: Sistem Manajemen Data User
+  Nama        : Firman Fadilah
+  Universitas : Universitas Udayana
+  Divisi      : Fullstack Web Developer - FWD 1
+  No. HP      : 082144715831
+  Email       : firmanfdlh1@gmail.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tugas 6 - Sistem Manajemen Data User ES6</title>
+    <style type="text/css">
+      /* Reset box model */
+      * {
+        box-sizing: border-box;
+      }
+
+      /* Styling untuk body */
+      body {
+        background-color: #f9f9f9;
+        color: #335c67;
+        font-family: Arial;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Styling untuk heading */
+      h1 {
+        text-align: center;
+        color: #335c67;
+        font-size: 24px;
+      }
+
+      h2 {
+        text-align: center;
+        color: #335c67;
+        font-size: 18px;
+      }
+
+      h3 {
+        color: #335c67;
+        font-size: 16px;
+      }
+
+      /* Styling untuk tabel */
+      table {
+        border: 2px solid #335c67;
+        border-style: solid;
+        margin: 0 auto;
+        background-color: white;
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 900px;
+      }
+
+      thead {
+        background-color: #335c67;
+        color: white;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+      }
+
+      tfoot {
+        background-color: #e0e0e0;
+        color: #335c67;
+      }
+
+      /* Styling untuk paragraf */
+      p {
+        margin: 10px;
+        padding: 5px;
+        text-align: left;
+      }
+
+      strong {
+        color: #335c67;
+        text-decoration: underline;
+      }
+
+      hr {
+        border-style: solid;
+        color: #335c67;
+      }
+
+      /* Styling untuk button */
+      .btn {
+        background-color: #335c67;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      .btn:hover {
+        background-color: #2a4a54;
+      }
+
+      /* Styling untuk form container */
+      .form-container {
+        background-color: white;
+        padding: 20px;
+        margin: 20px 0;
+        border: 1px solid #335c67;
+        border-radius: 5px;
+        max-width: 500px;
+        margin: 20px auto;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      input[type="email"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+      }
+
+      /* Styling untuk hasil output */
+      .output {
+        background-color: white;
+        padding: 15px;
+        margin: 10px 0;
+        border-left: 4px solid #335c67;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>TUGAS 6 - JAVASCRIPT ES6</h1>
+    <h2>Sistem Manajemen Data User dengan Modules</h2>
+    <hr />
+
+    <!-- 1. List data user awal minimal 10 -->
+    <h3>LIST DATA USER AWAL (10 DATA):</h3>
+    <div id="userAwal"></div>
+
+    <!-- 2. Form untuk menambah user -->
+    <div class="form-container">
+      <h3>Menambahkan User Baru</h3>
+      <div class="form-group">
+        <label for="namaUser">Nama:</label>
+        <input type="text" id="namaUser" placeholder="Masukkan nama lengkap" />
+      </div>
+      <div class="form-group">
+        <label for="umurUser">Umur:</label>
+        <input type="number" id="umurUser" placeholder="Masukkan umur" />
+      </div>
+      <div class="form-group">
+        <label for="alamatUser">Alamat:</label>
+        <input
+          type="text"
+          id="alamatUser"
+          placeholder="Masukkan alamat lengkap"
+        />
+      </div>
+      <div class="form-group">
+        <label for="emailUser">Email:</label>
+        <input type="email" id="emailUser" placeholder="Masukkan email" />
+      </div>
+      <button class="btn" id="btnTambah">Tambah User</button>
+    </div>
+
+    <!-- 3. Form untuk menghapus user -->
+    <div class="form-container">
+      <h3>Menghapus User</h3>
+      <div class="form-group">
+        <label for="idHapus">ID User yang akan dihapus:</label>
+        <input type="number" id="idHapus" placeholder="Masukkan ID user" />
+      </div>
+      <button class="btn" id="btnHapus">Hapus User</button>
+    </div>
+
+    <!-- 4. Tombol untuk menampilkan semua user -->
+    <div style="text-align: center; margin: 20px 0">
+      <h3>Menampilkan Semua User</h3>
+      <button class="btn" id="btnTampilkan">Tampilkan Semua User</button>
+    </div>
+
+    <!-- Area untuk menampilkan output -->
+    <div id="output"></div>
+
+    <script type="module">
+      // Import fungsi dari controller.js menggunakan ES6 modules
+      import { index, store, destroy } from "./controller.js";
+      import users from "./data.js";
+
+      // Variable untuk ID user selanjutnya
+      let nextId = 11;
+
+      // Fungsi untuk menampilkan detail user menggunakan Destructuring Object
+      function tampilkanDetailUser(user) {
+        // Menggunakan destructuring object
+        const { id, nama, umur, alamat, email } = user;
+        return `ID: ${id}, Nama: ${nama}, Umur: ${umur} tahun, Alamat: ${alamat}, Email: ${email}`;
+      }
+
+      // Fungsi untuk membuat tabel HTML dari daftar user menggunakan map()
+      function buatTabelUser(dataUsers) {
+        if (dataUsers.length === 0) {
+          return "<p>Belum ada user dalam daftar.</p>";
+        }
+
+        let tabelHTML = "<table>";
+        tabelHTML += "<thead>";
+        tabelHTML += "<tr>";
+        tabelHTML += "<th>ID</th>";
+        tabelHTML += "<th>Nama</th>";
+        tabelHTML += "<th>Umur</th>";
+        tabelHTML += "<th>Alamat</th>";
+        tabelHTML += "<th>Email</th>";
+        tabelHTML += "</tr>";
+        tabelHTML += "</thead>";
+        tabelHTML += "<tbody>";
+
+        // Menggunakan map() untuk menampilkan data
+        const tabelRows = dataUsers.map((user) => {
+          // Menggunakan destructuring dalam map
+          const { id, nama, umur, alamat, email } = user;
+          return `<tr>
+                    <td>${id}</td>
+                    <td>${nama}</td>
+                    <td>${umur} tahun</td>
+                    <td>${alamat}</td>
+                    <td>${email}</td>
+                </tr>`;
+        });
+
+        tabelHTML += tabelRows.join("");
+        tabelHTML += "</tbody>";
+        tabelHTML += "</table>";
+        return tabelHTML;
+      }
+
+      // Fungsi untuk menampilkan output ke halaman
+      function tampilkanOutput(pesan) {
+        const outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = '<div class="output">' + pesan + "</div>";
+      }
+
+      // Fungsi untuk menampilkan user awal di atas
+      function tampilkanUserAwal() {
+        const userAwalDiv = document.getElementById("userAwal");
+        let konten = buatTabelUser(users);
+        userAwalDiv.innerHTML = konten;
+      }
+
+      // Event Listener untuk tombol Tambah User menggunakan addEventListener
+      document
+        .getElementById("btnTambah")
+        .addEventListener("click", function () {
+          const nama = document.getElementById("namaUser").value;
+          const umur = parseInt(document.getElementById("umurUser").value);
+          const alamat = document.getElementById("alamatUser").value;
+          const email = document.getElementById("emailUser").value;
+
+          if (nama && umur && umur > 0 && alamat && email) {
+            const userBaru = {
+              id: nextId,
+              nama: nama,
+              umur: umur,
+              alamat: alamat,
+              email: email,
+            };
+
+            // Memanggil fungsi store dari controller untuk menambah user
+            const berhasil = store(userBaru);
+
+            if (berhasil) {
+              nextId++;
+
+              // Clear input fields
+              document.getElementById("namaUser").value = "";
+              document.getElementById("umurUser").value = "";
+              document.getElementById("alamatUser").value = "";
+              document.getElementById("emailUser").value = "";
+
+              // Tampilkan pesan sukses menggunakan destructuring
+              const {
+                id,
+                nama: namaUser,
+                umur: umurUser,
+                alamat: alamatUser,
+                email: emailUser,
+              } = userBaru;
+              const pesan = `<h3>USER BERHASIL DITAMBAHKAN!</h3>
+                                      <p><strong>Detail user baru:</strong></p>
+                                      <p>ID: ${id} | Nama: ${namaUser} | Umur: ${umurUser} tahun</p>
+                                      <p>Alamat: ${alamatUser} | Email: ${emailUser}</p>
+                                      <p><strong>Total user sekarang:</strong> ${users.length} user</p>`;
+              tampilkanOutput(pesan);
+
+              console.log("Event tambah user dijalankan!");
+            } else {
+              tampilkanOutput("<h3>GAGAL MENAMBAHKAN USER!</h3>");
+            }
+          } else {
+            alert("Mohon lengkapi semua field dengan benar!");
+          }
+        });
+
+      // Event Listener untuk tombol Hapus User
+      document
+        .getElementById("btnHapus")
+        .addEventListener("click", function () {
+          const id = parseInt(document.getElementById("idHapus").value);
+
+          if (id && id > 0) {
+            // Simpan data sebelum dihapus untuk ditampilkan
+            const userDihapus = users.find((user) => user.id === id);
+
+            // Memanggil fungsi destroy dari controller untuk menghapus user
+            const berhasil = destroy(id);
+
+            if (berhasil && userDihapus) {
+              // Clear input field
+              document.getElementById("idHapus").value = "";
+
+              // Menggunakan destructuring untuk menampilkan info user yang dihapus
+              const { nama, umur, alamat, email } = userDihapus;
+              const pesan = `<h3>USER BERHASIL DIHAPUS!</h3>
+                                      <p><strong>User yang dihapus:</strong></p>
+                                      <p>ID: ${id} | Nama: ${nama} | Umur: ${umur} tahun</p>
+                                      <p>Alamat: ${alamat} | Email: ${email}</p>
+                                      <p><strong>Total user sekarang:</strong> ${users.length} user</p>`;
+              tampilkanOutput(pesan);
+            } else {
+              tampilkanOutput(
+                `<h3>GAGAL MENGHAPUS!</h3><p>User dengan ID ${id} tidak ditemukan.</p>`
+              );
+            }
+
+            console.log("Event hapus user dijalankan!");
+          } else {
+            alert("Mohon masukkan ID user yang valid!");
+          }
+        });
+
+      // Event Listener untuk tombol Tampilkan Semua User
+      document
+        .getElementById("btnTampilkan")
+        .addEventListener("click", function () {
+          // Memanggil fungsi index dari controller untuk menampilkan semua user
+          const semuaUser = index();
+
+          let pesan = "<h3>MENAMPILKAN SEMUA USER:</h3>";
+          pesan += buatTabelUser(semuaUser);
+
+          // Menampilkan statistik menggunakan map untuk menghitung rata-rata umur
+          pesan +=
+            '<div style="background-color: #f0fff0; padding: 15px; margin: 10px 0; border-radius: 5px;">';
+          pesan += "<h4>Statistik User:</h4>";
+          pesan += `<p><strong>Total User:</strong> ${semuaUser.length} user</p>`;
+
+          // Menghitung rata-rata umur dengan destructuring
+          let totalUmur = 0;
+          semuaUser.map((user) => {
+            const { umur } = user; // Destructuring untuk mengambil umur
+            totalUmur += umur;
+            return user;
+          });
+          const rataRataUmur = totalUmur / semuaUser.length;
+          pesan += `<p><strong>Rata-rata Umur:</strong> ${rataRataUmur.toFixed(
+            1
+          )} tahun</p>`;
+          pesan += "</div>";
+
+          tampilkanOutput(pesan);
+
+          // Menampilkan di console dengan destructuring
+          console.log("=== CONTOH DESTRUCTURING DALAM CONSOLE ===");
+          semuaUser.map((user, index) => {
+            const { id, nama, umur, alamat, email } = user;
+            console.log(
+              `${
+                index + 1
+              }. ID: ${id}, Nama: ${nama}, Umur: ${umur}, Alamat: ${alamat}, Email: ${email}`
+            );
+            return user;
+          });
+
+          console.log("Event tampilkan semua user dijalankan!");
+        });
+
+      // Event listener untuk load halaman (menampilkan data awal)
+      window.addEventListener("load", function () {
+        console.log("=== SISTEM MANAJEMEN USER DIMUAT ===");
+        console.log("Menampilkan list data user awal (10 data)");
+
+        // Menampilkan user awal di bagian atas
+        tampilkanUserAwal();
+
+        // Contoh penggunaan ES6 features di console
+        console.log("=== CONTOH PENGGUNAAN ES6 FEATURES ===");
+
+        // Contoh destructuring array
+        const [pertama, kedua, ...sisanya] = users;
+        console.log("Destructuring Array - User pertama:", pertama);
+        console.log("Destructuring Array - User kedua:", kedua);
+        console.log("Destructuring Array - Sisa user:", sisanya);
+
+        // Contoh destructuring object
+        const { id, nama, umur, alamat, email } = users[0];
+        console.log(
+          "Destructuring Object - ID:",
+          id,
+          "Nama:",
+          nama,
+          "Umur:",
+          umur,
+          "Alamat:",
+          alamat,
+          "Email:",
+          email
+        );
+
+        // Menampilkan semua user dengan map()
+        console.log("=== MENAMPILKAN DATA MENGGUNAKAN MAP() ===");
+        users.map((user, index) => {
+          const { nama, umur } = user;
+          console.log(`${index + 1}. ${nama} - ${umur} tahun`);
+          return user;
+        });
+
+        console.log("Event load halaman dijalankan!");
+      });
+    </script>
+  </body>
+</html>
